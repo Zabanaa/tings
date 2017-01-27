@@ -1,4 +1,5 @@
 __pycache__
+tings/config.py
 .DS_*
 env/
 lib/
