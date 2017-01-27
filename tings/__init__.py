@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object('tings.config.BaseConfig')
+app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 db  = SQLAlchemy(app)
 
 @app.route('/')
