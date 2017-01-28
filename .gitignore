@@ -1,4 +1,5 @@
 __pycache__
+*.log
 tings/config.py
 .DS_*
 env/
