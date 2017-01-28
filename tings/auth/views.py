@@ -10,7 +10,7 @@ def register_user():
 def login_user():
     return "allow man in"
 
-@auth.route('logout')
+@auth.route('/logout')
 def logout_user():
     return "see you cuz"
 
