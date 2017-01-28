@@ -1,0 +1,93 @@
+from tings import db
+from flask import url_for
+
+class Project(db.Model):
+
+    id       = db.Column(db.Integer, primary_key=True)
+    name     = db.Column(db.String(50), unique=True)
+    tasks    = db.relationship('Task', backref='project', lazy='dynamic')
+
+    def __init__(self, payload):
+        for key, value in payload.iteritems():
+            setattr(self, key, value)
+
+    # def to_json(self):
+    #     """
+    #     Transforms the instance to a JSON formatted object.
+    #     """
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name,
+    #         "tasks": self.tasks,
+    #         "href": self.get_url()
+    #     }
+
+    # def get_url(self):
+    #     """
+    #     Returns a full url to the instance's resource in the following form:
+    #     https://tings.co/api/projects/<self.id>
+    #     """
+    #     return url_for('api.project', project_id=self.id)
+
+    def __repr__(self):
+        return "Project - {}".format(self.name)
+
+class Task(db.Model):
+
+    id      = db.Column(db.Integer, primary_key=True)
+    name    = db.Column(db.String(100))
+    done    = db.Column(db.Boolean)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    label_id = db.Column(db.Integer, db.ForeignKey('label.id'))
+
+    def __init__(self, payload):
+        for key, value in payload.iteritems():
+            setattr(self, key, value)
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "done": self.done,
+            "href": self.get_url(),
+            "project": self.get_project(),
+            "label": self.get_label()
+        }
+
+    def get_label(self):
+        return url_for('api.label', label_id=self.label_id)
+
+    def get_project(self):
+        return url_for('api.project', project_id=self.project_id)
+
+    def __repr__(self):
+        return "Task - {}".format(self.name)
+
+class Label(db.Model):
+    id      = db.Column(db.Integer, primary_key=True)
+    name    = db.Column(db.String(40), unique=True)
+    color   = db.Column(db.String(7))
+    tasks   = db.relationship('Task', backref="label", lazy="dynamic")
+
+    def __init__(self, payload):
+        for key, value in payload.iteritems():
+            setattr(self, key, value)
+
+    # def to_json(self):
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name,
+    #         "color": self.color,
+    #         "href": self.get_url(),
+    #         "tasks": self.get_takss()
+    #     }
+
+    # def get_url(self):
+    #     return url_for('api.label', label_id=self.id)
+
+    # def get_tasks(self):
+    #     return url_for('api.task', label_id=self.id)
+
+    def __repr__(self):
+        return "Label - {}".format(self.name)
+
