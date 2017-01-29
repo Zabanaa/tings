@@ -1,6 +1,10 @@
 __pycache__
+migrations/
 *.log
-tings/config.py
+config.py
+node_modules
+.Python
+.tox
 .DS_*
 env/
 lib/
