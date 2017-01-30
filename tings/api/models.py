@@ -17,17 +17,19 @@ class Project(db.Model):
         """
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
             # "tasks": self.tasks
-            # "href": self.get_url()
+            "href": self.url
         }
 
-    # def get_url(self):
-    #     """
-    #     Returns a full url to the instance's resource in the following form:
-    #     https://tings.co/api/projects/<self.id>
-    #     """
-    #     return url_for('api.project', project_id=self.id)
+    @property
+    def url(self):
+
+        """
+        Returns a full url to the instance's resource in the following form:
+        https://tings.co/api/projects/<self.id>
+        """
+        return url_for('.get_project', project_id=self.id, _external=True)
 
     def __repr__(self):
         return "Project #{} - {}".format(self.id, self.name)
