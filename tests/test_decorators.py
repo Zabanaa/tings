@@ -31,7 +31,7 @@ class TestDecorators(object):
             data = self.decode_json(response.data)
 
             assert data['status']       == fake_view_response[0]
-            assert data['body']         == fake_view_response[1]
+            assert data['data']         == fake_view_response[1]
             assert response.status_code == fake_view_response[0]
             for header in list(fake_view_response[2].keys()):
                 assert header in response.headers
