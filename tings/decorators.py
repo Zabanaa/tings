@@ -2,7 +2,7 @@ from flask import jsonify
 
 def jsonise(view_func):
 
-    def inner(*args, **kwargs):
+    def wrapper(*args, **kwargs):
 
         """
         takes the returned response object from the view function
@@ -28,5 +28,4 @@ def jsonise(view_func):
 
         return response
 
-    return inner
-
+    return wrapper
