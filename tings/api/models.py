@@ -11,16 +11,16 @@ class Project(db.Model):
         for key, value in payload.items():
             setattr(self, key, value)
 
-    # def to_json(self):
-    #     """
-    #     Transforms the instance to a JSON formatted object.
-    #     """
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "tasks": self.tasks,
-    #         "href": self.get_url()
-    #     }
+    def to_json(self):
+        """
+        Transforms the instance to a JSON formatted object.
+        """
+        return {
+            "id": self.id,
+            "name": self.name
+            # "tasks": self.tasks
+            # "href": self.get_url()
+        }
 
     # def get_url(self):
     #     """
