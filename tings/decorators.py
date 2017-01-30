@@ -16,7 +16,7 @@ def jsonise(view_func):
         # Create an empty object
         response_data           = {}
         response_data['status'] = status
-        response_data['body']   = body
+        response_data['data']   = body
 
         response = jsonify(response_data)
 
