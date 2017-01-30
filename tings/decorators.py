@@ -1,12 +1,6 @@
-from collections import namedtuple
 from flask import jsonify
-Response = namedtuple("Response", "status body headers")
 
-def get_todos():
-    response = Response(status=200, body="response body", headers=None)
-    return response
-
-def json(view_func):
+def jsonise(view_func):
 
     def inner(*args, **kwargs):
 
@@ -24,18 +18,15 @@ def json(view_func):
         response_data['status'] = status
         response_data['body']   = body
 
-        # response = jsonify(response)
+        response = jsonify(response_data)
 
         # set response status code and headers
-        # response.status_code = status
+        response.status_code = status
 
-        # if headers is not None:
-        #     response.headers.extend(headers)
+        if headers is not None:
+            response.headers.extend(headers)
 
-        return response_data
+        return response
 
     return inner
 
-# print(get_todos())
-get_todos = json(get_todos)
-print(get_todos())
