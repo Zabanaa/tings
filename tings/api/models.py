@@ -8,7 +8,7 @@ class Project(db.Model):
     tasks    = db.relationship('Task', backref='project', lazy='dynamic')
 
     def __init__(self, payload):
-        for key, value in payload.iteritems():
+        for key, value in payload.items():
             setattr(self, key, value)
 
     # def to_json(self):
@@ -30,7 +30,7 @@ class Project(db.Model):
     #     return url_for('api.project', project_id=self.id)
 
     def __repr__(self):
-        return "Project - {}".format(self.name)
+        return "Project #{} - {}".format(self.id, self.name)
 
 class Task(db.Model):
 
@@ -41,7 +41,7 @@ class Task(db.Model):
     label_id = db.Column(db.Integer, db.ForeignKey('label.id'))
 
     def __init__(self, payload):
-        for key, value in payload.iteritems():
+        for key, value in payload.items():
             setattr(self, key, value)
 
     def to_json(self):
@@ -70,7 +70,7 @@ class Label(db.Model):
     tasks   = db.relationship('Task', backref="label", lazy="dynamic")
 
     def __init__(self, payload):
-        for key, value in payload.iteritems():
+        for key, value in payload.items():
             setattr(self, key, value)
 
     # def to_json(self):
