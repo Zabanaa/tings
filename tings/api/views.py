@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from .helpers import ProjectHelper
 from tings.decorators import jsonise
 
@@ -6,16 +6,16 @@ api = Blueprint('tings_api', __name__)
 
 # Projects Related Endpoints
 
-@api.route("/projects", methods=["GET"])
+@api.route("/projects", methods=["GET"], endpoint="all_projects")
 @jsonise
 def all_projects():
     return ProjectHelper.get_all()
 
-@api.route("/projects", methods=["POST"])
-def add_project():
-    # payload = request.get_payload()
-    # return add_project(payload)
-    pass
+@api.route("/projects", methods=["POST"], endpoint="create_project")
+@jsonise
+def create_project():
+    payload = request.get_json()
+    return ProjectHelper.create(payload)
 
 @api.route("/projects/<int:project_id>", methods=["GET"])
 def get_project(project_id):
