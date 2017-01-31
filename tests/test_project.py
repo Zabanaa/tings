@@ -6,6 +6,8 @@ import json
 wintermute = {"name": "my project"}
 zabana     = {"name": "My Personal Site"}
 
+incomplete = {"title": "my project"}
+
 class TestProjectEndpoints(object):
 
     def setUp(self):
@@ -25,26 +27,47 @@ class TestProjectEndpoints(object):
 
     def post(self, endpoint, data, content_type="application/json"):
         resp = self.app.post(
-            endpoint,
-            data=json.dumps(data),
-            content_type=content_type,
-            follow_redirects=True
+        endpoint,
+        data=json.dumps(data),
+        content_type=content_type,
+        follow_redirects=True
         )
         return resp
 
     def test_get_all_projects(self):
         result      = self.app.get('/api/projects')
-        response    = self.decode_json(result.data)['data']
+        response    = self.decode_json(result.data)
         assert result.status_code == 200
         assert 'meta' in response
         assert 'count' in response['data']
         assert 'projects' in response['data']
 
     def test_post_project(self):
+
         result      = self.post('/api/projects', data=zabana)
-        response    = self.decode_json(result.data)['data']
+        response    = self.decode_json(result.data)
         assert result.status_code == 201
+        assert '/api/projects' in result.headers['location']
         assert 'meta' in response
         assert 'project' in response['data']
-        assert 'href' in response['data']['project']
-        assert '/api/projects' in result.headers['location']
+
+    def test_unique_name_violation(self):
+        result      = self.post('/api/projects', data=wintermute)
+        response    = self.decode_json(result.data)
+        expected_error_message = 'A project with that name already exists.'
+
+        assert result.status_code == 409
+        assert response['meta']['type'] == 'error'
+        assert response['response']['message'] == expected_error_message
+
+    def test_post_with_missing_fields(self):
+        result = self.post('/api/projects', data=incomplete)
+        response = self.decode_json(result.data)
+
+        expected_error_message = 'Missing required fields.'
+        assert result.status_code == 422
+        assert response['meta']['type'] == 'error'
+        assert response['response']['message'] == expected_error_message
+        assert 'missing_fields' in response['response']
+
+
