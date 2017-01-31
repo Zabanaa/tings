@@ -4,14 +4,14 @@ from flask import url_for
 class Project(db.Model):
 
     id       = db.Column(db.Integer, primary_key=True)
-    name     = db.Column(db.String(50), unique=True)
+    name     = db.Column(db.String(50), unique=True, nullable=False)
     tasks    = db.relationship('Task', backref='project', lazy='dynamic')
 
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
 
-    def to_json(self):
+    def to_dict(self):
         """
         Transforms the instance to a JSON formatted object.
         """
