@@ -1,22 +1,16 @@
 from tings import db
+from tings.utils import error_response, new_response, get_missing_fields
 from .models import Project, Task, Label
-from collections import namedtuple
-
-Response = namedtuple('Response', 'status body headers')
 
 class ProjectHelper(object):
 
     def get_all():
 
-        projects        = [p.to_json() for p in Project.query.all()]
+        projects        = [p.to_dict() for p in Project.query.all()]
         count           = len(projects)
-        meta            = { "type": "success", "status": 200 }
+
         data            = { "count": count, "projects": projects }
-
-        body            = { "meta": meta, "data": data }
-        response         = Response(status=200, body=body, headers=None)
-
-        return response
+        return new_response(status_code=200, data=data)
 
     def create(payload):
 
@@ -25,15 +19,25 @@ class ProjectHelper(object):
             db.session.add(new_project)
             db.session.commit()
 
-            json_project = new_project.to_json()
+            json_project = new_project.to_dict()
             headers      = { "location": new_project.url }
-            meta         = { "type": "success", "status": 201 }
             data         = { "project": json_project }
-            body         = { "meta": meta, "data": data }
-            response     = Response(status=201, body=body, headers=headers)
-            return response
+            return new_response(status_code=201, data=data, headers=headers)
+
         except Exception as e:
             # return 409, 422, whatevs
-            print(e)
-            response = Response(status=223, body="kjewe", headers=None)
-            return response
+            cause_of_error = str(e.__dict__['orig'])
+            if "violates unique constraint" in cause_of_error:
+                message = "A project with that name already exists."
+                return error_response(status_code=409, message=message)
+
+            elif "not-null" in cause_of_error:
+                missing_fields = get_missing_fields(e.__dict__['params'])
+                return error_response(
+                        status_code=422,
+                        message="Missing required fields.",
+                        missing_fields=missing_fields
+                )
+            else:
+                message = "Something went wrong, please ask a developer for assistance"
+                return error_response(status_code=500, message=message)
