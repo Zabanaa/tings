@@ -17,84 +17,84 @@ def create_project():
     payload = request.get_json()
     return ProjectHelper.create(payload)
 
-@api.route("/projects/<int:project_id>", methods=["GET"])
+@api.route("/projects/<int:project_id>", methods=["GET"], endpoint="get_project")
+@jsonise
 def get_project(project_id):
-    pass
+    return ProjectHelper.get_one(project_id)
 
-@api.route("/projects/<int:project_id>", methods=["PUT"])
+@api.route("/projects/<int:project_id>", methods=["PUT"], endpoint="update_project")
+@jsonise
 def update_project(project_id):
-    pass
+    payload = request.get_json()
+    return ProjectHelper.update(payload, project_id)
 
-@api.route("/projects/<int:project_id>", methods=["DELETE"])
+@api.route("/projects/<int:project_id>", methods=["DELETE"], endpoint="delete_project")
 def delete_project(project_id):
     pass
 
-@api.route("/projects/<int:project_id>/tasks", methods=["GET"])
+@api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="project_tasks")
 def get_project_tasks(project_id):
     pass
 
-@api.route("/projects/<int:project_id>/tasks/done", methods=["GET"])
+@api.route("/projects/<int:project_id>/tasks/done", methods=["GET"], endpoint="done_tasks")
 def get_done_tasks(project_id):
     pass
 
-
-
-
 # Task Related Endpoints
-@api.route("/tasks", methods=["GET"])
+@api.route("/tasks", methods=["GET"], endpoint="all_tasks")
 def all_tasks():
     return "all tasks"
 
-@api.route("/tasks", methods=["POST"])
+@api.route("/tasks", methods=["POST"], endpoint="create_task")
 def add_task():
     # new_task = request.get_paylaoad()
     # return create_task(new_task)
     pass
 
-@api.route("/tasks/<int:task_id>", methods=["GET"])
+@api.route("/tasks/<int:task_id>", methods=["GET"], endpoint="get_task")
 def get_task(task_id):
     # return controller.get_task(task_id)
     pass
 
-@api.route("/tasks/<int:task_id>", methods=["PUT"])
+@api.route("/tasks/<int:task_id>", methods=["PUT"], endpoint="update_task")
 def update_task(task_id):
     # return controller.update_task(task_id)
     pass
 
-@api.route("/tasks/<int:task_id>", methods=["DELETE"])
+@api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
 def delete_task(task_id):
     # return controller.delete_task(task_id)
     pass
 
 # Label Related Endpoints
 
-@api.route("/labels", methods=["GET"])
+@api.route("/labels", methods=["GET"], endpoint="all_labels")
 def all_labels():
     # return controller.get_labels()
     pass
 
-@api.route("/labels", methods=["POST"])
+@api.route("/labels", methods=["POST"], endpoint="create_label")
 def add_label():
     # new_label = request.payload()
     # return create_label(new_label)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["GET"])
+@api.route("/labels/<int:label_id>", methods=["GET"], endpoint="get_label")
 def get_label(label_id):
     # return controller.get_label(label_id)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["PUT"])
+@api.route("/labels/<int:label_id>", methods=["PUT"], endpoint="update_label")
 def update_label(label_id):
     # return controller.update_label(label_id)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["DELETE"])
+@api.route("/labels/<int:label_id>", methods=["DELETE"], endpoint="delete_label")
 def delete_label(label_id):
     # return controller.delete_label(label_id)
     pass
 
-@api.route("/label/<int:label_id>/tasks", methods=["GET"])
+@api.route("/label/<int:label_id>/tasks", methods=["GET"], endpoint="label_tasks")
 def get_label_tasks(label_id):
     # return controller.delete_label_tasks(label_id)
     pass
