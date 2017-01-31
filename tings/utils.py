@@ -23,7 +23,9 @@ def new_response(status_code=None, data={}, headers={}):
 
 def get_missing_fields(fields):
 
-	missing_fields = []
-	for key, value, in fields.items():
-		missing_fields.append(key)
-	return missing_fields
+    missing_fields = []
+
+    for key, value, in fields.items():
+        if fields[key] == None:
+            missing_fields.append(key)
+    return missing_fields
