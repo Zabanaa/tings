@@ -49,7 +49,7 @@ class TestUtils(object):
         status_code, body, headers = response
 
         assert status_code == expected_code
-        assert body['data'] == expected_body
+        assert body['response'] == expected_body
         assert headers == expected_headers
 
     def test_get_missing_fields(self):
