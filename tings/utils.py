@@ -17,7 +17,7 @@ def error_response(status_code=None, message=None, headers={}, missing_fields=No
 
 def new_response(status_code=None, data={}, headers={}):
 	meta         = { "type": "success", "status": status_code }
-	body         = { "meta": meta, "data": data }
+	body         = { "meta": meta, "response": data }
 	headers      = headers
 	return  Response(status=status_code, body=body, headers=headers)
 
