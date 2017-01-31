@@ -14,17 +14,12 @@ def jsonise(view_func):
         status, body, headers = response
 
         # Create an empty object
-        response_data           = {}
-        response_data['status'] = status
-        response_data['data']   = body
-
+        response_data           = body
         response = jsonify(response_data)
 
         # set response status code and headers
         response.status_code = status
-
-        if headers is not None:
-            response.headers.extend(headers)
+        response.headers.extend(headers)
 
         return response
 
