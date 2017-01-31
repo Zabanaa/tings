@@ -18,7 +18,7 @@ class Project(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            # "tasks": self.tasks
+            "tasks": "a link to the project's tasks",
             "href": self.url
         }
 
