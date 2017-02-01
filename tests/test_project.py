@@ -121,6 +121,11 @@ class TestProjectEndpoints(BaseTestClass):
         expected_status_code     = 204
         assert deleted_project.status_code == expected_status_code
 
+        get_all_projects         = self.app.get('/api/projects')
+        response                 = self.decode_json(get_all_projects.data)
+
+        assert response['response']['count'] == 0
+
     def test_delete_non_existing_project(self):
         deleted_project          = self.app.delete('/api/projects/808')
         response                 = self.decode_json(deleted_project.data)
