@@ -36,31 +36,39 @@ class Project(db.Model):
 
 class Task(db.Model):
 
-    id      = db.Column(db.Integer, primary_key=True)
-    name    = db.Column(db.String(100))
-    done    = db.Column(db.Boolean)
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-    label_id = db.Column(db.Integer, db.ForeignKey('label.id'))
+    id          = db.Column(db.Integer, primary_key=True)
+    name        = db.Column(db.String(100), nullable=False)
+    done        = db.Column(db.Boolean, default=False)
+    project_id  = db.Column(db.Integer, db.ForeignKey('project.id'))
+    label_id    = db.Column(db.Integer, db.ForeignKey('label.id'))
 
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
 
-    def to_json(self):
+    def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
             "done": self.done,
-            "href": self.get_url(),
-            "project": self.get_project(),
-            "label": self.get_label()
+            "href": self.url,
+            "project": "self.get_project()",
+            "label": "self.get_label()"
         }
 
+    @property
+    def url(self):
+        """
+        Returns a full url to the instance's resource in the following form:
+        https://tings.co/api/tasks/<self.id>
+        """
+        return url_for('.get_task', task_id=self.id, _external=True)
+
     def get_label(self):
-        return url_for('api.label', label_id=self.label_id)
+        return url_for('.get_label', label_id=self.label_id)
 
     def get_project(self):
-        return url_for('api.project', project_id=self.project_id)
+        return url_for('.get_project', project_id=self.project_id)
 
     def __repr__(self):
         return "Task - {}".format(self.name)
