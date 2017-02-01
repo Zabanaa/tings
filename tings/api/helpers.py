@@ -33,7 +33,12 @@ class ProjectHelper(object):
 
             json_project = new_project.to_dict()
             headers      = { "location": new_project.url }
-            data         = { "project": json_project }
+
+            data         = {
+                "project": json_project,
+                "message": "Project successfully created."
+            }
+
             return new_response(status_code=201, data=data, headers=headers)
 
         except Exception as e:
@@ -91,3 +96,14 @@ class ProjectHelper(object):
                 else:
                     message = "Something went wrong, please ask a developer for assistance"
                     return error_response(status_code=500, message=message)
+
+    def delete(project_id):
+
+        project = Project.query.get(project_id)
+
+        if project is None:
+            message = "Project not found"
+            return error_response(status_code=404, message=message)
+
+        data = {"message": "Resource deleted"}
+        return new_response(status_code=204, data=data)
