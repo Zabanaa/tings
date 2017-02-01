@@ -29,8 +29,9 @@ def update_project(project_id):
     return ProjectHelper.update(payload, project_id)
 
 @api.route("/projects/<int:project_id>", methods=["DELETE"], endpoint="delete_project")
+@jsonise
 def delete_project(project_id):
-    pass
+    return ProjectHelper.delete(project_id)
 
 @api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="project_tasks")
 def get_project_tasks(project_id):
