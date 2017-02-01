@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from .helpers import ProjectHelper
+from .helpers import ProjectHelper, TaskHelper
 from tings.decorators import jsonise
 
 api = Blueprint('tings_api', __name__)
@@ -43,19 +43,20 @@ def get_done_tasks(project_id):
 
 # Task Related Endpoints
 @api.route("/tasks", methods=["GET"], endpoint="all_tasks")
+@jsonise
 def all_tasks():
-    return "all tasks"
+    return TaskHelper.get_all()
 
 @api.route("/tasks", methods=["POST"], endpoint="create_task")
+@jsonise
 def add_task():
-    # new_task = request.get_paylaoad()
-    # return create_task(new_task)
-    pass
+    new_task = request.get_json()
+    return TaskHelper.create(new_task)
 
 @api.route("/tasks/<int:task_id>", methods=["GET"], endpoint="get_task")
+@jsonise
 def get_task(task_id):
-    # return controller.get_task(task_id)
-    pass
+    return TaskHelper.get_one(task_id)
 
 @api.route("/tasks/<int:task_id>", methods=["PUT"], endpoint="update_task")
 def update_task(task_id):
