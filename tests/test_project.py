@@ -5,7 +5,6 @@ import json
 
 wintermute = {"name": "my project"}
 zabana     = {"name": "My Personal Site"}
-
 incomplete = {"title": "my project"}
 
 class TestProjectEndpoints(object):
@@ -124,9 +123,30 @@ class TestProjectEndpoints(object):
         assert response['meta']['type'] == 'error'
         assert response['response']['message'] == expected_error_message
 
-
     def test_update_project_unique_key_violation(self):
-        pass
+        post_project    = self.post('/api/projects', data=zabana)
+        zabana_id       = self.decode_json(post_project.data)['response']['project']['id']
+
+        update_project  = self.put('/api/projects/2', data=wintermute)
+        response        = self.decode_json(update_project.data)
+
+        expected_status_code    = 409
+        expected_error_message  = "A project with that name already exists."
+
+        assert update_project.status_code        == expected_status_code
+        assert response['response']['message']   == expected_error_message
 
     def test_delete_project(self):
-        pass
+        delete_project          = self.app.delete('/api/projects/1')
+        expected_status_code    = 204
+        assert delete_project.status_code == expected_status_code
+
+    def test_delete_non_existing_project(self):
+        delete_project          = self.app.delete('/api/projects/808')
+        response                = self.decode_json(delete_project.data)
+
+        expected_status_code        = 404
+        expected_response_message   = "Project not found"
+
+        assert delete_project.status_code       == expected_status_code
+        assert response['response']['message']  == expected_response_message
