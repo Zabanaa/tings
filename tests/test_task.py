@@ -72,3 +72,13 @@ class TestProjectEndpoints(BaseTestClass):
 
         assert task.status_code                 == expected_status_code
         assert response['response']['message']  == expected_error_message
+
+    def test_update_task(self):
+        task_data   = {"name": "updated task"}
+        task        = self.put('/api/tasks/1', data=task_data)
+        response    = self.decode_json(task.data)
+
+        expected_status_code    = 200
+
+        assert task.status_code == expected_status_code
+        assert response['response']['task']['name'] == task_data['name']
