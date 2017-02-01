@@ -11,6 +11,24 @@ class Project(db.Model):
         for key, value in payload.items():
             setattr(self, key, value)
 
+    def save(self):
+        """saves the payload to the db"""
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def update(self, payload):
+
+        for key, value in payload.items():
+            setattr(self, key, value)
+        db.session.commit()
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
+
     def to_dict(self):
         """
         Transforms the instance to a JSON formatted object.
@@ -45,6 +63,21 @@ class Task(db.Model):
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def update(self, payload):
+        for key, value in payload.items():
+            setattr(self, key, value)
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self
 
     def to_dict(self):
         return {
