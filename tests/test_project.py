@@ -1,3 +1,4 @@
+from .test import BaseTestClass
 from tings import app, db
 from tings.decorators import jsonise
 from tings.api.models import Project, Task, Label
@@ -7,7 +8,7 @@ wintermute = {"name": "my project"}
 zabana     = {"name": "My Personal Site"}
 incomplete = {"title": "my project"}
 
-class TestProjectEndpoints(object):
+class TestProjectEndpoints(BaseTestClass):
 
     def setUp(self):
         app.config.from_object('tings.config.TestConfig')
@@ -20,27 +21,6 @@ class TestProjectEndpoints(object):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
-    def decode_json(self, payload):
-        return json.loads(payload.decode('utf-8'))
-
-    def post(self, endpoint, data, content_type="application/json"):
-        resp = self.app.post(
-        endpoint,
-        data=json.dumps(data),
-        content_type=content_type,
-        follow_redirects=True
-        )
-        return resp
-
-    def put(self, endpoint, data, content_type="application/json"):
-        resp = self.app.put(
-        endpoint,
-        data=json.dumps(data),
-        content_type=content_type,
-        follow_redirects=True
-        )
-        return resp
 
     def test_get_all_projects(self):
         projects    = self.app.get('/api/projects')
