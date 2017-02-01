@@ -59,9 +59,10 @@ def get_task(task_id):
     return TaskHelper.get_one(task_id)
 
 @api.route("/tasks/<int:task_id>", methods=["PUT"], endpoint="update_task")
+@jsonise
 def update_task(task_id):
-    # return controller.update_task(task_id)
-    pass
+    payload = request.get_json()
+    return TaskHelper.update(task_id, payload)
 
 @api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
 def delete_task(task_id):
