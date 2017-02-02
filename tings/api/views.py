@@ -1,5 +1,7 @@
 from flask import Blueprint, request
+from tings.utils import Helpers
 from .helpers import ProjectHelper, TaskHelper
+from tings.api.models import Project, Task, Label
 from tings.decorators import jsonise
 
 api = Blueprint('tings_api', __name__)
@@ -9,29 +11,29 @@ api = Blueprint('tings_api', __name__)
 @api.route("/projects", methods=["GET"], endpoint="all_projects")
 @jsonise
 def all_projects():
-    return ProjectHelper.get_all()
+    return Project.get_all()
 
 @api.route("/projects", methods=["POST"], endpoint="create_project")
 @jsonise
 def create_project():
     payload = request.get_json()
-    return ProjectHelper.create(payload)
+    return Project.create(payload)
 
 @api.route("/projects/<int:project_id>", methods=["GET"], endpoint="get_project")
 @jsonise
 def get_project(project_id):
-    return ProjectHelper.get_one(project_id)
+    return Project.get_one(project_id)
 
 @api.route("/projects/<int:project_id>", methods=["PUT"], endpoint="update_project")
 @jsonise
 def update_project(project_id):
     payload = request.get_json()
-    return ProjectHelper.update(payload, project_id)
+    return Project.update(payload, project_id)
 
 @api.route("/projects/<int:project_id>", methods=["DELETE"], endpoint="delete_project")
 @jsonise
 def delete_project(project_id):
-    return ProjectHelper.delete(project_id)
+    return Helpers.delete(Project, project_id)
 
 @api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="project_tasks")
 def get_project_tasks(project_id):
@@ -45,24 +47,24 @@ def get_done_tasks(project_id):
 @api.route("/tasks", methods=["GET"], endpoint="all_tasks")
 @jsonise
 def all_tasks():
-    return TaskHelper.get_all()
+    return Task.get_all()
 
 @api.route("/tasks", methods=["POST"], endpoint="create_task")
 @jsonise
 def add_task():
     new_task = request.get_json()
-    return TaskHelper.create(new_task)
+    return Task.create(new_task)
 
 @api.route("/tasks/<int:task_id>", methods=["GET"], endpoint="get_task")
 @jsonise
 def get_task(task_id):
-    return TaskHelper.get_one(task_id)
+    return Task.get_one(task_id)
 
 @api.route("/tasks/<int:task_id>", methods=["PUT"], endpoint="update_task")
 @jsonise
 def update_task(task_id):
     payload = request.get_json()
-    return TaskHelper.update(task_id, payload)
+    return Task.update(payload, task_id)
 
 @api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
 @jsonise
