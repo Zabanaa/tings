@@ -68,6 +68,20 @@ class TaskHelper(object):
                 message = "Something went wrong, please ask a developer for assistance"
                 return error_response(status_code=500, message=message)
 
+    def delete(task_id):
+
+        task = Task.query.get(task_id)
+
+        if task is None:
+            message = "Task not found"
+            return error_response(status_code=404, message=message)
+
+        task.delete()
+        return new_response(status_code=204)
+
+## Project
+## Helper
+
 class ProjectHelper(object):
 
     def get_all():
@@ -158,5 +172,4 @@ class ProjectHelper(object):
             return error_response(status_code=404, message=message)
 
         project.delete()
-        data = {"message": "Resource deleted"}
-        return new_response(status_code=204, data=data)
+        return new_response(status_code=204)

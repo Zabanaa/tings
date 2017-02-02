@@ -65,9 +65,9 @@ def update_task(task_id):
     return TaskHelper.update(task_id, payload)
 
 @api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
+@jsonise
 def delete_task(task_id):
-    # return controller.delete_task(task_id)
-    pass
+    return TaskHelper.delete(task_id)
 
 # Label Related Endpoints
 

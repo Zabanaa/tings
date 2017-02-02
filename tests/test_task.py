@@ -82,3 +82,18 @@ class TestProjectEndpoints(BaseTestClass):
 
         assert task.status_code == expected_status_code
         assert response['response']['task']['name'] == task_data['name']
+
+    def test_delete_task(self):
+        deleted_task = self.app.delete('/api/tasks/1')
+        expected_status_code = 204
+
+        assert deleted_task.status_code == expected_status_code
+
+    def test_delete_task_wrong_id(self):
+        deleted_task = self.app.delete('/api/tasks/03802932')
+        response     = self.decode_json(deleted_task.data)
+        expected_status_code = 404
+        expected_error_message = "Task not found"
+
+        assert deleted_task.status_code == expected_status_code
+        assert response['response']['message'] == expected_error_message
