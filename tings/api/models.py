@@ -1,7 +1,9 @@
 from tings import db
+from tings.utils import new_response, error_response, get_missing_fields
 from flask import url_for
+from tings.database import Model
 
-class Project(db.Model):
+class Project(Model):
 
     id       = db.Column(db.Integer, primary_key=True)
     name     = db.Column(db.String(50), unique=True, nullable=False)
@@ -10,24 +12,6 @@ class Project(db.Model):
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
-
-    def save(self):
-        """saves the payload to the db"""
-        db.session.add(self)
-        db.session.commit()
-        return self
-
-    def update(self, payload):
-
-        for key, value in payload.items():
-            setattr(self, key, value)
-        db.session.commit()
-        return self
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     def to_dict(self):
         """
@@ -52,7 +36,7 @@ class Project(db.Model):
     def __repr__(self):
         return "Project #{} - {}".format(self.id, self.name)
 
-class Task(db.Model):
+class Task(Model):
 
     id          = db.Column(db.Integer, primary_key=True)
     name        = db.Column(db.String(100), nullable=False)
@@ -63,21 +47,6 @@ class Task(db.Model):
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self
-
-    def update(self, payload):
-        for key, value in payload.items():
-            setattr(self, key, value)
-        return self
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        return self
 
     def to_dict(self):
         return {
@@ -106,7 +75,7 @@ class Task(db.Model):
     def __repr__(self):
         return "Task - {}".format(self.name)
 
-class Label(db.Model):
+class Label(Model):
     id      = db.Column(db.Integer, primary_key=True)
     name    = db.Column(db.String(40), unique=True)
     color   = db.Column(db.String(7))
