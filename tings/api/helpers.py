@@ -11,32 +11,32 @@ class TaskHelper(object):
         data            = { "count": count, "tasks": tasks }
         return new_response(status_code=200, data=data)
 
-    def create(payload):
+    # def create(payload):
 
-        try:
-            new_task     = Task(payload).save()
-            json_task    = new_task.to_dict()
+    #     try:
+    #         new_task     = Task(payload).save()
+    #         json_task    = new_task.to_dict()
 
-            headers      = { "location": new_task.url }
-            data         = {
-                "task": json_task,
-                "message": "Task successfully added."
-            }
+    #         headers      = { "location": new_task.url }
+    #         data         = {
+    #             "task": json_task,
+    #             "message": "Task successfully added."
+    #         }
 
-            return new_response(status_code=201, data=data, headers=headers)
+    #         return new_response(status_code=201, data=data, headers=headers)
 
-        except Exception as e:
-            cause_of_error = str(e.__dict__['orig'])
-            if "not-null" in cause_of_error:
-                missing_fields = get_missing_fields(e.__dict__['params'])
-                return error_response(
-                        status_code=422,
-                        message="Missing required fields.",
-                        missing_fields=missing_fields
-                )
-            else:
-                message = "Something went wrong, please ask a developer for assistance"
-                return error_response(status_code=500, message=message)
+    #     except Exception as e:
+    #         cause_of_error = str(e.__dict__['orig'])
+    #         if "not-null" in cause_of_error:
+    #             missing_fields = get_missing_fields(e.__dict__['params'])
+    #             return error_response(
+    #                     status_code=422,
+    #                     message="Missing required fields.",
+    #                     missing_fields=missing_fields
+    #             )
+    #         else:
+    #             message = "Something went wrong, please ask a developer for assistance"
+    #             return error_response(status_code=500, message=message)
 
 
     def get_one(task_id):
@@ -104,38 +104,38 @@ class ProjectHelper(object):
         data            = { "project": project }
         return new_response(status_code=200, data=data)
 
-    def create(payload):
+    # def create(payload):
 
-        try:
-            new_project = Project(payload)
-            new_project.save()
-            json_project = new_project.to_dict()
+    #     try:
+    #         new_project = Project(payload)
+    #         new_project.save()
+    #         json_project = new_project.to_dict()
 
-            headers      = { "location": new_project.url }
+    #         headers      = { "location": new_project.url }
 
-            data         = {
-                "project": json_project,
-                "message": "Project successfully created."
-            }
+    #         data         = {
+    #             "project": json_project,
+    #             "message": "Project successfully created."
+    #         }
 
-            return new_response(status_code=201, data=data, headers=headers)
+    #         return new_response(status_code=201, data=data, headers=headers)
 
-        except Exception as e:
-            cause_of_error = str(e.__dict__['orig'])
-            if "violates unique constraint" in cause_of_error:
-                message = "A project with that name already exists."
-                return error_response(status_code=409, message=message)
+    #     except Exception as e:
+    #         cause_of_error = str(e.__dict__['orig'])
+    #         if "violates unique constraint" in cause_of_error:
+    #             message = "A project with that name already exists."
+    #             return error_response(status_code=409, message=message)
 
-            elif "not-null" in cause_of_error:
-                missing_fields = get_missing_fields(e.__dict__['params'])
-                return error_response(
-                        status_code=422,
-                        message="Missing required fields.",
-                        missing_fields=missing_fields
-                )
-            else:
-                message = "Something went wrong, please ask a developer for assistance"
-                return error_response(status_code=500, message=message)
+    #         elif "not-null" in cause_of_error:
+    #             missing_fields = get_missing_fields(e.__dict__['params'])
+    #             return error_response(
+    #                     status_code=422,
+    #                     message="Missing required fields.",
+    #                     missing_fields=missing_fields
+    #             )
+    #         else:
+    #             message = "Something went wrong, please ask a developer for assistance"
+    #             return error_response(status_code=500, message=message)
 
     def update(payload, project_id):
 
