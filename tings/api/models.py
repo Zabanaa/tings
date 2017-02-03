@@ -32,6 +32,15 @@ class Project(Model):
         """
         return url_for('.get_project', project_id=self.id, _external=True)
 
+    @property
+    def tasks(self):
+
+        """
+            Returns a full url to GET all the tasks
+            assigned to the current project
+        """
+        return url_for('.get_project_tasks', project_id=self.id, _external=True)
+
 class Task(Model):
 
     id          = db.Column(db.Integer, primary_key=True)
@@ -50,7 +59,7 @@ class Task(Model):
             "name": self.name,
             "done": self.done,
             "href": self.url,
-            "project": "self.get_project()",
+            "project": self.parent_project,
             "label": "self.get_label()"
         }
 
@@ -65,8 +74,12 @@ class Task(Model):
     def get_label(self):
         return url_for('.get_label', label_id=self.label_id)
 
-    def get_project(self):
-        return url_for('.get_project', project_id=self.project_id)
+    @property
+    def parent_project(self):
+        if self.project_id is not None:
+            return url_for('.get_project', project_id=self.project_id, _external=True)
+
+        return "No project assigned"
 
 class Label(Model):
     id      = db.Column(db.Integer, primary_key=True)
