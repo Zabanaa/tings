@@ -12,7 +12,7 @@ class ModelMixin(object):
         count        = len(objects)
         data         = {"count": count, objects_name: objects }
 
-        return new_response(status_code=200, data=data)
+        return new_response(status_code=200, body=data)
 
     @classmethod
     def get_one(cls, id):
@@ -25,7 +25,7 @@ class ModelMixin(object):
 
         obj  = obj.to_dict()
         data = { obj_name: obj }
-        return new_response(status_code=200, data=data)
+        return new_response(status_code=200, body=data)
 
     @classmethod
     def create(cls, payload):
@@ -47,7 +47,7 @@ class ModelMixin(object):
                 self.obj_name: self.to_dict(),
                 "message": message
             }
-            return new_response(status_code=201, data=data, headers=headers)
+            return new_response(status_code=201, body=data, headers=headers)
 
     @classmethod
     def update(cls, payload, id):
@@ -74,7 +74,7 @@ class ModelMixin(object):
                 "message": "Update successful",
                 obj_name: json_obj
             }
-            return new_response(status_code=200, data=data)
+            return new_response(status_code=200, body=data)
 
     @classmethod
     def delete(cls, id):
@@ -89,7 +89,7 @@ class ModelMixin(object):
 
         db.session.delete(obj)
         db.session.commit()
-        return new_response(status_code=204, data={})
+        return new_response(status_code=204)
 
     @property
     def as_dict(self):
