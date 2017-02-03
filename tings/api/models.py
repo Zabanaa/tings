@@ -1,7 +1,6 @@
 from tings import db
-from tings.utils import new_response, error_response, get_missing_fields
-from flask import url_for
 from tings.database import Model
+from flask import url_for
 
 class Project(Model):
 
