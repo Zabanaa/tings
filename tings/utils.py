@@ -29,3 +29,33 @@ def get_missing_fields(fields):
         if fields[key] == None:
             missing_fields.append(key)
     return missing_fields
+
+
+def not_found_error():
+    # 404
+    pass
+
+def missing_fields_error():
+    # 422
+    pass
+
+def unique_field_error():
+    # 409
+    pass
+
+def server_error():
+    # 500
+    pass
+
+def forbidden_error():
+    # 401
+    pass
+
+def unauthorized_error():
+    # 403
+    pass
+
+def bad_request_error():
+    # 400
+    pass
+
