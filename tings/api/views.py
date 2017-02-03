@@ -1,6 +1,4 @@
 from flask import Blueprint, request
-from tings.utils import Helpers
-from .helpers import ProjectHelper, TaskHelper
 from tings.api.models import Project, Task, Label
 from tings.decorators import jsonise
 
@@ -33,7 +31,7 @@ def update_project(project_id):
 @api.route("/projects/<int:project_id>", methods=["DELETE"], endpoint="delete_project")
 @jsonise
 def delete_project(project_id):
-    return Helpers.delete(Project, project_id)
+    return Project.delete(project_id)
 
 @api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="project_tasks")
 def get_project_tasks(project_id):
@@ -69,7 +67,7 @@ def update_task(task_id):
 @api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
 @jsonise
 def delete_task(task_id):
-    return TaskHelper.delete(task_id)
+    return Task.delete(task_id)
 
 # Label Related Endpoints
 
