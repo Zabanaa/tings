@@ -40,9 +40,10 @@ class TestUtils(object):
         expected_message = "Succcess"
         expected_body    = {"projects": [1, 2, 3]}
         expected_headers = {"X-Custom-Header": "Some value"}
+
         response = new_response(
                     status_code=200,
-                    data=expected_body,
+                    body=expected_body,
                     headers=expected_headers
         )
 

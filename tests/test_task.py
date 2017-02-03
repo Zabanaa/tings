@@ -22,6 +22,7 @@ class TestTaskEndpoints(BaseTestClass):
 
     def test_get_all_tasks(self):
         tasks     = self.app.get('/api/tasks')
+        print(tasks.__dict__)
         response  = self.decode_json(tasks.data)
 
         expected_status_code = 200

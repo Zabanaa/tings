@@ -10,7 +10,7 @@ class TestDecorators(BaseTestClass):
     def fake_view_func(self):
         data    = { "id": 3 }
         headers = { "someheader": "header" }
-        return new_response( status_code=202, data=data, headers = headers)
+        return new_response(status_code=202, body=data, headers=headers)
 
     def test_jsonise_decorator(self):
         with app.test_request_context():
