@@ -2,7 +2,6 @@ from tings import app
 from .test import BaseTestClass
 from tings.utils import new_response
 from tings.decorators import jsonise
-import json
 
 class TestDecorators(BaseTestClass):
 

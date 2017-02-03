@@ -1,28 +1,12 @@
 from .test import BaseTestClass
-from tings import app, db
-from tings.api.models import Task
-import json
 
 test_task = {"name": "doing the tings"}
 my_task   = {"name": "tings to do blud"}
 
 class TestTaskEndpoints(BaseTestClass):
 
-    def setUp(self):
-        app.config.from_object('tings.config.TestConfig')
-        self.app = app.test_client()
-        db.create_all()
-        task = Task(test_task)
-        db.session.add(task)
-        db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-
     def test_get_all_tasks(self):
         tasks     = self.app.get('/api/tasks')
-        print(tasks.__dict__)
         response  = self.decode_json(tasks.data)
 
         expected_status_code = 200

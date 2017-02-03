@@ -1,26 +1,10 @@
 from .test import BaseTestClass
-from tings import app, db
-from tings.decorators import jsonise
-from tings.api.models import Project, Task, Label
-import json
 
 wintermute = {"name": "my project"}
 zabana     = {"name": "My Personal Site"}
 incomplete = {"title": "my project"}
 
 class TestProjectEndpoints(BaseTestClass):
-
-    def setUp(self):
-        app.config.from_object('tings.config.TestConfig')
-        self.app = app.test_client()
-        db.create_all()
-        project = Project(wintermute)
-        db.session.add(project)
-        db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
     def test_get_all_projects(self):
         projects    = self.app.get('/api/projects')
