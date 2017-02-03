@@ -6,7 +6,7 @@ import json
 test_task = {"name": "doing the tings"}
 my_task   = {"name": "tings to do blud"}
 
-class TestProjectEndpoints(BaseTestClass):
+class TestTaskEndpoints(BaseTestClass):
 
     def setUp(self):
         app.config.from_object('tings.config.TestConfig')
@@ -31,7 +31,6 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'tasks' in response['response']
 
     def test_post_new_task(self):
-
         new_task = self.post('/api/tasks', data=my_task)
         response = self.decode_json(new_task.data)
 
@@ -43,7 +42,6 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'task' in response['response']
 
     def test_post_missing_fields(self):
-
         new_task = self.post('/api/tasks', data={})
         response = self.decode_json(new_task.data)
 

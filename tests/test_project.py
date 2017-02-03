@@ -31,7 +31,6 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'projects' in response['response']
 
     def test_post_project(self):
-
         new_project = self.post('/api/projects', data=zabana)
         response    = self.decode_json(new_project.data)
         assert new_project.status_code == 201
@@ -92,7 +91,6 @@ class TestProjectEndpoints(BaseTestClass):
         assert response['response']['message'] == expected_response_message
 
     def test_update_project_wrong_id(self):
-
         data                    = {"name": "Wintermute v3"}
         updated_project         = self.put('/api/projects/883284', data=data)
         response                = self.decode_json(updated_project.data)
@@ -103,6 +101,7 @@ class TestProjectEndpoints(BaseTestClass):
         assert response['meta']['type'] == 'error'
         assert response['response']['message'] == expected_error_message
 
+
     def test_update_project_unique_key_violation(self):
         new_project     = self.post('/api/projects', data=zabana)
         zabana_id       = self.decode_json(new_project.data)['response']['project']['id']
@@ -111,7 +110,7 @@ class TestProjectEndpoints(BaseTestClass):
         response         = self.decode_json(updated_project.data)
 
         expected_status_code    = 409
-        expected_error_message  = "A project with that name already exists."
+        expected_error_message  = "Resource must be unique"
 
         assert updated_project.status_code        == expected_status_code
         assert response['response']['message']    == expected_error_message
