@@ -1,8 +1,6 @@
 from tings import db
+from sqlalchemy.exc import IntegrityError
 from tings.utils import error_response, new_response, get_missing_fields
-
-
-
 
 class ModelMixin(object):
 
@@ -40,9 +38,8 @@ class ModelMixin(object):
             db.session.add(self)
             db.session.commit()
 
-        except Exception as e:
+        except IntegrityError as e:
             return self.handle_exception(e)
-
         else:
             message      = "{} created".format(self.obj_name).capitalize()
             headers      = { "location": self.url }
@@ -59,39 +56,54 @@ class ModelMixin(object):
            with the new values.
         """
         obj = cls.query.get(id)
+        obj_name = cls.__tablename__
 
         if obj is None:
-            message = "{} not found".format(cls.obj_name)
+            message = "{} not found".format(obj_name.capitalize())
             return error_response(status_code=404, message=message)
 
         try:
             for key, value in payload.items():
-                setattr(cls, key, value)
-
-        except Exception as e:
-            return self.handle_exceptions(e)
-        else:
+                setattr(obj, key, value)
             db.session.commit()
+        except IntegrityError as e:
+            return cls.handle_exception(e)
+        else:
             json_obj    = obj.to_dict()
-            data        = {cls.obj_name: json_obj }
+            data        = {
+                "message": "Update successful",
+                obj_name: json_obj
+            }
             return new_response(status_code=200, data=data)
 
-    def delete(self):
+    @classmethod
+    def delete(cls, id):
         """deletes the instance from the database"""
-        db.session.delete(self)
+        obj = cls.query.get(id)
+        obj_name = cls.__tablename__
+
+        if obj is None:
+
+            message = "{} not found".format(obj_name.capitalize())
+            return error_response(status_code=404, message=message)
+
+        db.session.delete(obj)
         db.session.commit()
+        return new_response(status_code=204, data={})
 
     @property
     def as_dict(self):
         """creates a dict out of the instance's keys"""
+        pass
 
     @property
     def obj_name(self):
         return self.__tablename__
 
-    def handle_exception(self, exc):
+    @classmethod
+    def handle_exception(cls, exc):
         cause_of_error = str(exc.__dict__['orig'])
-        if "violates unique constraint" in cause_of_error:
+        if "unique" in cause_of_error:
             message = "Resource must be unique"
             return error_response(status_code=409, message=message)
 
@@ -99,8 +111,8 @@ class ModelMixin(object):
             missing_fields = get_missing_fields(exc.__dict__['params'])
             return error_response(
                     status_code=422,
-                        message="Missing required fields.",
-                        missing_fields=missing_fields
+                    message="Missing required fields.",
+                    missing_fields=missing_fields
                 )
         else:
             message = "Something went wrong, please ask a developer for assistance"
