@@ -32,9 +32,6 @@ class Project(Model):
         """
         return url_for('.get_project', project_id=self.id, _external=True)
 
-    def __repr__(self):
-        return "Project #{} - {}".format(self.id, self.name)
-
 class Task(Model):
 
     id          = db.Column(db.Integer, primary_key=True)
@@ -71,9 +68,6 @@ class Task(Model):
     def get_project(self):
         return url_for('.get_project', project_id=self.project_id)
 
-    def __repr__(self):
-        return "Task - {}".format(self.name)
-
 class Label(Model):
     id      = db.Column(db.Integer, primary_key=True)
     name    = db.Column(db.String(40), unique=True)
@@ -98,7 +92,3 @@ class Label(Model):
 
     # def get_tasks(self):
     #     return url_for('api.task', label_id=self.id)
-
-    def __repr__(self):
-        return "Label - {}".format(self.name)
-
