@@ -6,22 +6,24 @@ import json
 
 class TestDecorators(BaseTestClass):
 
+    @jsonise
     def fake_view_func(self):
-        data = { "id": 3 }
-        headers={ "someheader": "header" }
+        data    = { "id": 3 }
+        headers = { "someheader": "header" }
         return new_response( status_code=202, data=data, headers = headers)
 
     def test_jsonise_decorator(self):
         with app.test_request_context():
 
-            status, body, headers   = fake_view_func()
-            decorated_view          = jsonise(fake_view_func)
-
-            response                = decorated_view()
+            response                = self.fake_view_func()
             response_data           = self.decode_json(response.data)
 
-            assert response.status_code == status
-            assert response_data        == body
+            expected_status_code    = 202
+            expected_headers        = { "someheader": "header" }
+            expected_data           = { "id": 3 }
 
-            for header in list(headers.keys()):
-                assert header in response.headers
+            assert response.status_code             == expected_status_code
+            assert response_data['response']        == expected_data
+
+            for expected_header in list(expected_headers.keys()):
+                assert expected_header in response.headers
