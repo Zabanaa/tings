@@ -14,6 +14,16 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'count' in response['response']
         assert 'projects' in response['response']
 
+    def test_get_one_project(self):
+        project     = self.app.get('/api/projects/1')
+        response    = self.decode_json(project.data)
+
+        assert project.status_code == 200
+        assert 'project' in response['response']
+
+    def test_get_projects_tasks(self):
+        pass
+
     def test_post_project(self):
         new_project = self.post('/api/projects', data=zabana)
         response    = self.decode_json(new_project.data)
