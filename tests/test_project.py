@@ -62,8 +62,10 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'missing_fields' in response['response']
 
     def test_get_project_by_id(self):
-        project  = self.app.get('/api/projects/1')
-        response = self.decode_json(project.data)
+        project           = self.app.get('/api/projects/1')
+        response          = self.decode_json(project.data)
+        tasks_dict_key    = response['response']['project']['tasks']
+
 
         assert project.status_code == 200
         assert response['meta']['type'] == 'success'
@@ -72,6 +74,8 @@ class TestProjectEndpoints(BaseTestClass):
 
         assert isinstance(project_data, dict)
         assert 'tasks' in response['response']['project']
+
+        assert '/api/projects/1/tasks' in tasks_dict_key
 
     def test_get_non_existing_project(self):
 
