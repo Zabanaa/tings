@@ -24,6 +24,15 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'tasks' in response['response']
         assert isinstance(response['response']['tasks'], list)
 
+    def test_get_projects_done_tasks(self):
+
+        tasks       = self.app.get("/api/projects/1/tasks/done")
+        response    = self.decode_json(tasks.data)
+
+        assert tasks.status_code == 200
+        assert 'count' in response['response']
+        assert 'tasks' in response['response']
+        assert isinstance(response['response']['tasks'], list)
 
     def test_post_project(self):
         new_project = self.post('/api/projects', data=zabana)

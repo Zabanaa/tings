@@ -39,8 +39,9 @@ def get_project_tasks(project_id):
     return Project.get_tasks(project_id)
 
 @api.route("/projects/<int:project_id>/tasks/done", methods=["GET"], endpoint="done_tasks")
+@jsonise
 def get_done_tasks(project_id):
-    pass
+    return Project.get_tasks(project_id, done=True)
 
 # Task Related Endpoints
 @api.route("/tasks", methods=["GET"], endpoint="all_tasks")

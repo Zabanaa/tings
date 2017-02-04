@@ -43,9 +43,13 @@ class Project(Model):
         return url_for('.get_project_tasks', project_id=self.id, _external=True)
 
     @classmethod
-    def get_tasks(cls, project_id):
+    def get_tasks(cls, project_id, done=False):
 
-        _tasks = Task.query.filter_by(project_id=project_id).all()
+        if done:
+            _tasks = Task.query.filter_by(project_id=project_id, done=True).all()
+        else:
+            _tasks = Task.query.filter_by(project_id=project_id).all()
+
         tasks  = [t.to_dict() for t in _tasks]
         count  = len(tasks)
         data   = { "count": count, "tasks": tasks }
