@@ -30,32 +30,29 @@ def get_missing_fields(fields):
             missing_fields.append(key)
     return missing_fields
 
+def not_found_error(message):
+    return error_response(status_code=404, message=message)
 
-def not_found_error():
-    # 404
-    pass
-
-def missing_fields_error():
-    # 422
-    pass
+def missing_fields_error(fields):
+    message = "Missing required fields."
+    return  error_response(status_code=422, message=message, missing_fields=fields)
 
 def unique_field_error():
-    # 409
-    pass
+    message = "Resource must be unique"
+    return error_response(status_code=409, message=message)
 
 def server_error():
-    # 500
-    pass
+    message = "Something bad happened"
+    return error_response(status_code=500, message=message)
 
 def forbidden_error():
-    # 401
-    pass
+    message = "You do not have permission to access this resource"
+    return error_response(status_code=403, message=message)
 
 def unauthorized_error():
-    # 403
-    pass
+    message = "You are not authorised to access this resource. Please sign up or login."
+    return error_response(status_code=403, message=message)
 
 def bad_request_error():
-    # 400
-    pass
-
+    message = "Bad request"
+    return error_response(status_code=400, message=message)

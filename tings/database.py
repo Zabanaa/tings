@@ -1,6 +1,6 @@
 from tings import db
+from tings.utils import *
 from sqlalchemy.exc import IntegrityError
-from tings.utils import error_response, new_response, get_missing_fields
 
 class ModelMixin(object):
 
@@ -40,7 +40,7 @@ class ModelMixin(object):
 
         if obj is None:
             message = "{} not found".format(obj_name.capitalize())
-            return error_response(status_code=404, message=message)
+            return not_found_error(message)
 
         try:
             for key, value in payload.items():
@@ -70,7 +70,7 @@ class ModelMixin(object):
         if obj is None:
 
             message = "{} not found".format(obj_name.capitalize())
-            return error_response(status_code=404, message=message)
+            return not_found_error(message)
 
         db.session.delete(obj)
         db.session.commit()
@@ -106,7 +106,7 @@ class ModelMixin(object):
 
         if obj is None:
             message = "{} not found".format(obj_name.capitalize())
-            return error_response(status_code=404, message=message)
+            return not_found_error(message)
 
         obj  = obj.to_dict()
         data = { obj_name: obj }
@@ -130,19 +130,12 @@ class ModelMixin(object):
         """
         cause_of_error = str(exc.__dict__['orig'])
         if "unique" in cause_of_error:
-            message = "Resource must be unique"
-            return error_response(status_code=409, message=message)
-
+            return unique_field_error()
         elif "not-null" in cause_of_error:
             missing_fields = get_missing_fields(exc.__dict__['params'])
-            return error_response(
-                    status_code=422,
-                    message="Missing required fields.",
-                    missing_fields=missing_fields
-                )
+            return missing_fields_error(missing_fields)
         else:
-            message = "Something went wrong, please ask a developer for assistance"
-            return error_response(status_code=500, message=message)
+            return server_error()
 
     def __repr__(self):
         """ changes how the object is displayed in the shell"""
