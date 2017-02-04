@@ -37,13 +37,15 @@ class TestTaskEndpoints(BaseTestClass):
         assert response['response']['message']  == expected_error_message
 
     def test_get_task_by_id(self):
-        task        = self.app.get('/api/tasks/1')
-        response    = self.decode_json(task.data)
+        task            = self.app.get('/api/tasks/1')
+        response        = self.decode_json(task.data)
+        task_project    = response['response']['task']['project']
 
         expected_status_code = 200
         assert task.status_code == expected_status_code
         assert 'meta' in response
         assert 'task' in response['response']
+        assert task_project == "No project assigned" or "/api/projects/" in task__project
 
     def test_get_task_wrong_id(self):
 
