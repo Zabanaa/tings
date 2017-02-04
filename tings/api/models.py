@@ -1,5 +1,6 @@
 from tings import db
 from tings.database import Model
+from tings.utils import new_response
 from flask import url_for
 
 class Project(Model):
@@ -19,7 +20,7 @@ class Project(Model):
         return {
             "id": self.id,
             "name": self.name,
-            "tasks": "a link to the project's tasks",
+            "tasks": self.tasks,
             "href": self.url
         }
 
@@ -40,6 +41,15 @@ class Project(Model):
             assigned to the current project
         """
         return url_for('.get_project_tasks', project_id=self.id, _external=True)
+
+    @classmethod
+    def get_tasks(cls, project_id):
+
+        _tasks = Task.query.filter_by(project_id=project_id).all()
+        tasks  = [t.to_dict() for t in _tasks]
+        count  = len(tasks)
+        data   = { "count": count, "tasks": tasks }
+        return new_response(status_code=200, body=data)
 
 class Task(Model):
 

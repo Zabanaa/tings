@@ -36,7 +36,7 @@ def delete_project(project_id):
 @api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="get_project_tasks")
 @jsonise
 def get_project_tasks(project_id):
-    pass
+    return Project.get_tasks(project_id)
 
 @api.route("/projects/<int:project_id>/tasks/done", methods=["GET"], endpoint="done_tasks")
 def get_done_tasks(project_id):
