@@ -130,7 +130,8 @@ class ModelMixin(object):
         """
         cause_of_error = str(exc.__dict__['orig'])
         if "unique" in cause_of_error:
-            return unique_field_error()
+            key = cause_of_error.split("DETAIL: ")[1].split("=")[0].split(" ")[2]
+            return unique_field_error(key)
         elif "not-null" in cause_of_error:
             missing_fields = get_missing_fields(exc.__dict__['params'])
             return missing_fields_error(missing_fields)
@@ -144,4 +145,3 @@ class ModelMixin(object):
 
 class Model(ModelMixin, db.Model):
     __abstract__ = True
-

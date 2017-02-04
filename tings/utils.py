@@ -37,8 +37,8 @@ def missing_fields_error(fields):
     message = "Missing required fields."
     return  error_response(status_code=422, message=message, missing_fields=fields)
 
-def unique_field_error():
-    message = "Resource must be unique"
+def unique_field_error(field):
+    message = "{} already exists".format(field)
     return error_response(status_code=409, message=message)
 
 def server_error():

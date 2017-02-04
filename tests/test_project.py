@@ -25,7 +25,7 @@ class TestProjectEndpoints(BaseTestClass):
     def test_unique_name_violation(self):
         project_copy = self.post('/api/projects', data=wintermute)
         response     = self.decode_json(project_copy.data)
-        expected_error_message = "Resource must be unique"
+        expected_error_message = "(name) already exists"
 
         assert project_copy.status_code == 409
         assert response['meta']['type'] == 'error'
@@ -94,7 +94,7 @@ class TestProjectEndpoints(BaseTestClass):
         response         = self.decode_json(updated_project.data)
 
         expected_status_code    = 409
-        expected_error_message  = "Resource must be unique"
+        expected_error_message  = "(name) already exists"
 
         assert updated_project.status_code        == expected_status_code
         assert response['response']['message']    == expected_error_message
