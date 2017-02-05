@@ -23,14 +23,14 @@ def create_project(name):
 @manager.option('-P', '--project-id', dest='project_id')
 @manager.option('-L', '--label-id')
 def create_task(name, project_id, label_id=None):
-    t = Task({"name": name, "id": id, "label_id": label_id})
+    t = Task({"name": name, "project_id": project_id, "label_id": label_id})
     db.session.add(t)
     db.session.commit()
 
 @manager.option('-n', '--name')
-@manager.option('-T', '--task-id')
-def create_label(name, task_id):
-    l = Label({"name": name, "task_id": task_id})
+@manager.option('-P', '--project-id')
+def create_label(name, project_id):
+    l = Label({"name": name, "project_id": project_id})
     db.session.add(l)
     db.session.commit()
 
