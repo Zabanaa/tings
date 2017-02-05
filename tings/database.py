@@ -1,5 +1,6 @@
 from tings import db
 from tings.utils import *
+from flask import url_for
 from sqlalchemy.exc import IntegrityError
 
 class ModelMixin(object):
@@ -112,16 +113,6 @@ class ModelMixin(object):
         data = { obj_name: obj }
         return new_response(status_code=200, body=data)
 
-    @property
-    def as_dict(self):
-        """creates a dict out of the instance's keys"""
-        pass
-
-    @property
-    def obj_name(self):
-        """ Returns the name of the class calling the method in lowercase"""
-        return self.__tablename__
-
     @classmethod
     def handle_exception(cls, exc):
         """ Accepts an exception
@@ -137,6 +128,21 @@ class ModelMixin(object):
             return missing_fields_error(missing_fields)
         else:
             return server_error()
+
+    @property
+    def as_dict(self):
+        """creates a dict out of the instance's keys"""
+        pass
+
+    @property
+    def obj_name(self):
+        """ Returns the name of the class calling the method in lowercase"""
+        return self.__tablename__
+
+    @property
+    def url(self):
+        url_to_call = "tings_api.get_{}".format(self.obj_name)
+        return url_for(url_to_call, id=self.id, _external=True)
 
     def __repr__(self):
         """ changes how the object is displayed in the shell"""

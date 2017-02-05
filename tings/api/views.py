@@ -17,31 +17,31 @@ def create_project():
     payload = request.get_json()
     return Project.create(payload)
 
-@api.route("/projects/<int:project_id>", methods=["GET"], endpoint="get_project")
+@api.route("/projects/<int:id>", methods=["GET"], endpoint="get_project")
 @jsonise
-def get_project(project_id):
-    return Project.get_one(project_id)
+def get_project(id):
+    return Project.get_one(id)
 
-@api.route("/projects/<int:project_id>", methods=["PUT"], endpoint="update_project")
+@api.route("/projects/<int:id>", methods=["PUT"], endpoint="update_project")
 @jsonise
-def update_project(project_id):
+def update_project(id):
     payload = request.get_json()
-    return Project.update(payload, project_id)
+    return Project.update(payload, id)
 
-@api.route("/projects/<int:project_id>", methods=["DELETE"], endpoint="delete_project")
+@api.route("/projects/<int:id>", methods=["DELETE"], endpoint="delete_project")
 @jsonise
-def delete_project(project_id):
-    return Project.delete(project_id)
+def delete_project(id):
+    return Project.delete(id)
 
-@api.route("/projects/<int:project_id>/tasks", methods=["GET"], endpoint="get_project_tasks")
+@api.route("/projects/<int:id>/tasks", methods=["GET"], endpoint="get_project_tasks")
 @jsonise
-def get_project_tasks(project_id):
-    return Project.get_tasks(project_id)
+def get_project_tasks(id):
+    return Project.get_tasks(id)
 
-@api.route("/projects/<int:project_id>/tasks/done", methods=["GET"], endpoint="done_tasks")
+@api.route("/projects/<int:id>/tasks/done", methods=["GET"], endpoint="done_tasks")
 @jsonise
-def get_done_tasks(project_id):
-    return Project.get_tasks(project_id, done=True)
+def get_done_tasks(id):
+    return Project.get_tasks(id, done=True)
 
 # Task Related Endpoints
 @api.route("/tasks", methods=["GET"], endpoint="all_tasks")
@@ -55,21 +55,21 @@ def add_task():
     new_task = request.get_json()
     return Task.create(new_task)
 
-@api.route("/tasks/<int:task_id>", methods=["GET"], endpoint="get_task")
+@api.route("/tasks/<int:id>", methods=["GET"], endpoint="get_task")
 @jsonise
-def get_task(task_id):
-    return Task.get_one(task_id)
+def get_task(id):
+    return Task.get_one(id)
 
-@api.route("/tasks/<int:task_id>", methods=["PUT"], endpoint="update_task")
+@api.route("/tasks/<int:id>", methods=["PUT"], endpoint="update_task")
 @jsonise
-def update_task(task_id):
+def update_task(id):
     payload = request.get_json()
-    return Task.update(payload, task_id)
+    return Task.update(payload, id)
 
-@api.route("/tasks/<int:task_id>", methods=["DELETE"], endpoint="delete_task")
+@api.route("/tasks/<int:id>", methods=["DELETE"], endpoint="delete_task")
 @jsonise
-def delete_task(task_id):
-    return Task.delete(task_id)
+def delete_task(id):
+    return Task.delete(id)
 
 # Label Related Endpoints
 
@@ -84,22 +84,22 @@ def add_label():
     # return create_label(new_label)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["GET"], endpoint="get_label")
-def get_label(label_id):
-    # return controller.get_label(label_id)
+@api.route("/labels/<int:id>", methods=["GET"], endpoint="get_label")
+def get_label(id):
+    # return controller.get_label(id)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["PUT"], endpoint="update_label")
-def update_label(label_id):
-    # return controller.update_label(label_id)
+@api.route("/labels/<int:id>", methods=["PUT"], endpoint="update_label")
+def update_label(id):
+    # return controller.update_label(id)
     pass
 
-@api.route("/labels/<int:label_id>", methods=["DELETE"], endpoint="delete_label")
-def delete_label(label_id):
-    # return controller.delete_label(label_id)
+@api.route("/labels/<int:id>", methods=["DELETE"], endpoint="delete_label")
+def delete_label(id):
+    # return controller.delete_label(id)
     pass
 
-@api.route("/label/<int:label_id>/tasks", methods=["GET"], endpoint="label_tasks")
-def get_label_tasks(label_id):
-    # return controller.delete_label_tasks(label_id)
+@api.route("/label/<int:id>/tasks", methods=["GET"], endpoint="label_tasks")
+def get_label_tasks(id):
+    # return controller.delete_label_tasks(id)
     pass

@@ -25,30 +25,21 @@ class Project(Model):
         }
 
     @property
-    def url(self):
-
-        """
-        Returns a full url to the instance's resource in the following form:
-        https://tings.co/api/projects/<self.id>
-        """
-        return url_for('.get_project', project_id=self.id, _external=True)
-
-    @property
     def tasks(self):
 
         """
             Returns a full url to GET all the tasks
             assigned to the current project
         """
-        return url_for('.get_project_tasks', project_id=self.id, _external=True)
+        return url_for('.get_project_tasks', id=self.id, _external=True)
 
     @classmethod
     def get_tasks(cls, project_id, done=False):
 
         if done:
-            _tasks = Task.query.filter_by(project_id=project_id, done=True).all()
+            _tasks = Task.query.filter_by(id=project_id, done=True).all()
         else:
-            _tasks = Task.query.filter_by(project_id=project_id).all()
+            _tasks = Task.query.filter_by(id=project_id).all()
 
         tasks  = [t.to_dict() for t in _tasks]
         count  = len(tasks)
@@ -76,14 +67,6 @@ class Task(Model):
             "project": self.parent_project,
             "label": "self.get_label()"
         }
-
-    @property
-    def url(self):
-        """
-        Returns a full url to the instance's resource in the following form:
-        https://tings.co/api/tasks/<self.id>
-        """
-        return url_for('.get_task', task_id=self.id, _external=True)
 
     def get_label(self):
         return url_for('.get_label', label_id=self.label_id)
@@ -113,9 +96,6 @@ class Label(Model):
     #         "href": self.get_url(),
     #         "tasks": self.get_takss()
     #     }
-
-    # def get_url(self):
-    #     return url_for('api.label', label_id=self.id)
 
     # def get_tasks(self):
     #     return url_for('api.task', label_id=self.id)
