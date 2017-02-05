@@ -5,9 +5,10 @@ from flask import url_for
 
 class Project(Model):
 
-    id       = db.Column(db.Integer, primary_key=True)
-    name     = db.Column(db.String(50), unique=True, nullable=False)
-    tasks    = db.relationship('Task', backref='project', lazy='dynamic')
+    id          = db.Column(db.Integer, primary_key=True)
+    name        = db.Column(db.String(50), unique=True, nullable=False)
+    tasks       = db.relationship('Task', backref='project', lazy='dynamic')
+    labels      = db.relationship('Label', backref='project', lazy='dynamic')
 
     def __init__(self, payload):
         for key, value in payload.items():
@@ -21,6 +22,7 @@ class Project(Model):
             "id": self.id,
             "name": self.name,
             "tasks": self.tasks,
+            "labels": self.labels,
             "href": self.url
         }
 
@@ -33,17 +35,35 @@ class Project(Model):
         """
         return url_for('.get_project_tasks', id=self.id, _external=True)
 
+    @property
+    def labels(self):
+        """
+            Returns a full url to GET all the labels
+            created in a project.
+        """
+        return url_for('.get_project_labels', id=self.id, _external=True)
+
     @classmethod
     def get_tasks(cls, project_id, done=False):
 
         if done:
-            _tasks = Task.query.filter_by(id=project_id, done=True).all()
+            _tasks = Task.query.filter_by(project_id=project_id, done=True).all()
         else:
-            _tasks = Task.query.filter_by(id=project_id).all()
+            _tasks = Task.query.filter_by(project_id=project_id).all()
 
         tasks  = [t.to_dict() for t in _tasks]
         count  = len(tasks)
         data   = { "count": count, "tasks": tasks }
+        return new_response(status_code=200, body=data)
+
+    @classmethod
+    def get_labels(cls, project_id):
+
+        _labels = Label.query.filter_by(project_id=project_id).all()
+
+        labels  = [l.to_dict() for l in _labels]
+        count   = len(labels)
+        data    = { "count": count, "labels": labels }
         return new_response(status_code=200, body=data)
 
 class Task(Model):
@@ -79,23 +99,25 @@ class Task(Model):
         return "No project assigned"
 
 class Label(Model):
-    id      = db.Column(db.Integer, primary_key=True)
-    name    = db.Column(db.String(40), unique=True)
-    color   = db.Column(db.String(7))
-    tasks   = db.relationship('Task', backref="label", lazy="dynamic")
+    id              = db.Column(db.Integer, primary_key=True)
+    name            = db.Column(db.String(40), nullable=False)
+    color           = db.Column(db.String(7))
+    project_id      = db.Column(db.Integer, db.ForeignKey('project.id'))
+    tasks           = db.relationship('Task', backref="label", lazy="dynamic")
 
     def __init__(self, payload):
         for key, value in payload.items():
             setattr(self, key, value)
 
-    # def to_json(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "color": self.color,
-    #         "href": self.get_url(),
-    #         "tasks": self.get_takss()
-    #     }
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "color": self.color,
+            "href": self.url,
+            "project": self.project_id,
+            "tasks": "self.get_takss()"
+        }
 
     # def get_tasks(self):
     #     return url_for('api.task', label_id=self.id)
