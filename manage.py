@@ -21,11 +21,9 @@ def create_project(name):
 
 @manager.option('-n', '--name', dest='name')
 @manager.option('-P', '--project-id', dest='project_id')
-# @manager.option('-T', '--task-id')
-# def create_task(name, project_id, task_id=None):
-def create_task(name, project_id):
-    t = Task({"name": name, "project_id": project_id})
-    # t = Task({"name": name, "id": id, "task_id": task_id})
+@manager.option('-L', '--label-id')
+def create_task(name, project_id, label_id=None):
+    t = Task({"name": name, "id": id, "label_id": label_id})
     db.session.add(t)
     db.session.commit()
 
