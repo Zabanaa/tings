@@ -121,3 +121,15 @@ class TestLabelEndpoints(BaseTestClass):
         assert response_type             == expected_response_type
         assert deleted_label.status_code == expected_status_code
 
+    def test_get_label_tasks(self):
+        tasks           = self.app.get("/api/labels/1/tasks")
+        response        = self.decode_json(tasks.data)
+
+        expected_status_code    = 200
+
+        response_tasks          = response['response']['tasks']
+
+        assert tasks.status_code == expected_status_code
+        assert 'count' in response['response']
+        assert isinstance(response_tasks, list)
+

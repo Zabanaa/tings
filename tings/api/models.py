@@ -116,8 +116,18 @@ class Label(Model):
             "color": self.color,
             "href": self.url,
             "project": self.project_id,
-            "tasks": "self.get_takss()"
+            "tasks": self.tasks
         }
 
-    # def get_tasks(self):
-    #     return url_for('api.task', label_id=self.id)
+    @property
+    def tasks(self):
+        return url_for(".get_label_tasks", id=self.id, _external=True)
+
+    @classmethod
+    def get_tasks(cls, label_id):
+
+        _tasks = Task.query.filter_by(label_id=label_id).all()
+        tasks  = [t.to_dict() for t in _tasks]
+        count  = len(tasks)
+        data   = { "count": count, "tasks": tasks }
+        return new_response(status_code=200, body=data)

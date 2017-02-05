@@ -105,7 +105,7 @@ def update_label(id):
 def delete_label(id):
     return Label.delete(id)
 
-@api.route("/label/<int:id>/tasks", methods=["GET"], endpoint="label_tasks")
+@api.route("/labels/<int:id>/tasks", methods=["GET"], endpoint="get_label_tasks")
+@jsonise
 def get_label_tasks(id):
-    # return controller.delete_label_tasks(id)
-    pass
+    return Label.get_tasks(id)
