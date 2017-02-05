@@ -84,25 +84,26 @@ def all_labels():
     return Label.get_all()
 
 @api.route("/labels", methods=["POST"], endpoint="create_label")
+@jsonise
 def add_label():
-    # new_label = request.payload()
-    # return create_label(new_label)
-    pass
+    payload = request.get_json()
+    return Label.create(payload)
 
 @api.route("/labels/<int:id>", methods=["GET"], endpoint="get_label")
+@jsonise
 def get_label(id):
-    # return controller.get_label(id)
-    pass
+    return Label.get_one(id)
 
 @api.route("/labels/<int:id>", methods=["PUT"], endpoint="update_label")
+@jsonise
 def update_label(id):
-    # return controller.update_label(id)
-    pass
+    payload = request.get_json()
+    return Label.update(payload, id)
 
 @api.route("/labels/<int:id>", methods=["DELETE"], endpoint="delete_label")
+@jsonise
 def delete_label(id):
-    # return controller.delete_label(id)
-    pass
+    return Label.delete(id)
 
 @api.route("/label/<int:id>/tasks", methods=["GET"], endpoint="label_tasks")
 def get_label_tasks(id):
