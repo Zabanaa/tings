@@ -43,6 +43,11 @@ def get_project_tasks(id):
 def get_done_tasks(id):
     return Project.get_tasks(id, done=True)
 
+@api.route("/projects/<int:id>/labels", methods=["GET"], endpoint="get_project_labels")
+@jsonise
+def get_project_labels(id):
+    return Project.get_labels(id)
+
 # Task Related Endpoints
 @api.route("/tasks", methods=["GET"], endpoint="all_tasks")
 @jsonise
@@ -74,9 +79,9 @@ def delete_task(id):
 # Label Related Endpoints
 
 @api.route("/labels", methods=["GET"], endpoint="all_labels")
+@jsonise
 def all_labels():
-    # return controller.get_labels()
-    pass
+    return Label.get_all()
 
 @api.route("/labels", methods=["POST"], endpoint="create_label")
 def add_label():
