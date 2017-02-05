@@ -24,6 +24,16 @@ class TestProjectEndpoints(BaseTestClass):
         assert 'tasks' in response['response']
         assert isinstance(response['response']['tasks'], list)
 
+    def test_get_projects_labels(self):
+
+        labels       = self.app.get("/api/projects/1/labels")
+        response     = self.decode_json(labels.data)
+
+        assert labels.status_code == 200
+        assert 'count' in response['response']
+        assert 'labels' in response['response']
+        assert isinstance(response['response']['labels'], list)
+
     def test_get_projects_done_tasks(self):
 
         tasks       = self.app.get("/api/projects/1/tasks/done")
