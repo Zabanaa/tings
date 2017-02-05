@@ -10,11 +10,13 @@ class BaseTestClass(object):
 
         test_task    = Task({"name": "doing the tings"})
         test_project = Project({"name": "my project"})
+        test_label   = Label({"name": "my label"})
 
         db.create_all()
 
         db.session.add(test_task)
         db.session.add(test_project)
+        db.session.add(test_label)
 
         db.session.commit()
 
