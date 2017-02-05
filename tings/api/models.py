@@ -94,7 +94,7 @@ class Task(Model):
     @property
     def parent_project(self):
         if self.project_id is not None:
-            return url_for('.get_project', project_id=self.project_id, _external=True)
+            return url_for('.get_project', id=self.project_id, _external=True)
 
         return "No project assigned"
 
