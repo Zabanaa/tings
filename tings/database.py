@@ -142,6 +142,13 @@ class ModelMixin(object):
         return new_response(status_code=200, body=data)
 
     @property
+    def parent_project(self):
+        if self.project_id is not None:
+            return url_for('.get_project', id=self.project_id, _external=True)
+
+        return "No project assigned"
+
+    @property
     def as_dict(self):
         """creates a dict out of the instance's keys"""
         pass
