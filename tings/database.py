@@ -129,6 +129,18 @@ class ModelMixin(object):
         else:
             return server_error()
 
+    @classmethod
+    def get_tasks(cls, **kwargs):
+
+        from tings.api.models import Task
+
+        _tasks = Task.query.filter_by(**kwargs).all()
+
+        tasks  = [t.to_dict() for t in _tasks]
+        count  = len(tasks)
+        data   = { "count": count, "tasks": tasks }
+        return new_response(status_code=200, body=data)
+
     @property
     def as_dict(self):
         """creates a dict out of the instance's keys"""

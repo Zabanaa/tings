@@ -36,12 +36,12 @@ def delete_project(id):
 @api.route("/projects/<int:id>/tasks", methods=["GET"], endpoint="get_project_tasks")
 @jsonise
 def get_project_tasks(id):
-    return Project.get_tasks(id)
+    return Project.get_tasks(project_id=id)
 
 @api.route("/projects/<int:id>/tasks/done", methods=["GET"], endpoint="done_tasks")
 @jsonise
 def get_done_tasks(id):
-    return Project.get_tasks(id, done=True)
+    return Project.get_tasks(project_id=id, done=True)
 
 @api.route("/projects/<int:id>/labels", methods=["GET"], endpoint="get_project_labels")
 @jsonise
@@ -108,4 +108,4 @@ def delete_label(id):
 @api.route("/labels/<int:id>/tasks", methods=["GET"], endpoint="get_label_tasks")
 @jsonise
 def get_label_tasks(id):
-    return Label.get_tasks(id)
+    return Label.get_tasks(project_id=id)

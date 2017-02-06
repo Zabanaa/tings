@@ -44,19 +44,6 @@ class Project(Model):
         return url_for('.get_project_labels', id=self.id, _external=True)
 
     @classmethod
-    def get_tasks(cls, project_id, done=False):
-
-        if done:
-            _tasks = Task.query.filter_by(project_id=project_id, done=True).all()
-        else:
-            _tasks = Task.query.filter_by(project_id=project_id).all()
-
-        tasks  = [t.to_dict() for t in _tasks]
-        count  = len(tasks)
-        data   = { "count": count, "tasks": tasks }
-        return new_response(status_code=200, body=data)
-
-    @classmethod
     def get_labels(cls, project_id):
 
         _labels = Label.query.filter_by(project_id=project_id).all()
@@ -122,12 +109,3 @@ class Label(Model):
     @property
     def tasks(self):
         return url_for(".get_label_tasks", id=self.id, _external=True)
-
-    @classmethod
-    def get_tasks(cls, label_id):
-
-        _tasks = Task.query.filter_by(label_id=label_id).all()
-        tasks  = [t.to_dict() for t in _tasks]
-        count  = len(tasks)
-        data   = { "count": count, "tasks": tasks }
-        return new_response(status_code=200, body=data)
