@@ -108,4 +108,4 @@ def delete_label(id):
 @api.route("/labels/<int:id>/tasks", methods=["GET"], endpoint="get_label_tasks")
 @jsonise
 def get_label_tasks(id):
-    return Label.get_tasks(project_id=id)
+    return Label.get_tasks(label_id=id)
