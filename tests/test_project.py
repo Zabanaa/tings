@@ -74,18 +74,25 @@ class TestProjectEndpoints(BaseTestClass):
     def test_get_project_by_id(self):
         project           = self.app.get('/api/projects/1')
         response          = self.decode_json(project.data)
-        tasks_dict_key    = response['response']['project']['tasks']
 
+        expected_status_code    = 200
+        expected_response_type  = "success"
+        expected_labels_url     = "/api/projects/1/labels"
+        expected_tasks_url      = "/api/projects/1/tasks"
 
-        assert project.status_code == 200
-        assert response['meta']['type'] == 'success'
+        response_tasks          = response['response']['project']['tasks']
+        response_labels         = response['response']['project']['labels']
+        response_type           = response['meta']['type']
+
+        assert project.status_code == expected_status_code
+        assert response_type       == expected_response_type
+        assert expected_labels_url in response_labels
+        assert expected_tasks_url in response_tasks
 
         project_data = response['response']['project']
 
         assert isinstance(project_data, dict)
-        assert 'tasks' in response['response']['project']
-
-        assert '/api/projects/1/tasks' in tasks_dict_key
+        assert 'tasks' in project_data
 
     def test_get_non_existing_project(self):
 
