@@ -16,10 +16,17 @@ class TestLabelEndpoints(BaseTestClass):
         label       = self.app.get('/api/labels/1')
         response    = self.decode_json(label.data)
 
-        expected_status_code = 200
+        expected_status_code    = 200
+        response_label_tasks    = response['response']['label']['tasks']
+        response_label_project  = response['response']['label']['project']
+
+        expected_label_tasks        = "/api/labels/1/tasks"
+        expected_label_project      = "No project assigned"
 
         assert label.status_code == expected_status_code
         assert 'label' in response['response']
+        assert expected_label_tasks in response_label_tasks
+        assert expected_label_project in response_label_project
 
     def test_get_label_wrong_id(self):
         label       = self.app.get('/api/labels/2')

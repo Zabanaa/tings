@@ -72,18 +72,15 @@ class Task(Model):
             "done": self.done,
             "href": self.url,
             "project": self.parent_project,
-            "label": "self.get_label()"
+            "label": self.label
         }
 
-    def get_label(self):
-        return url_for('.get_label', label_id=self.label_id)
-
     @property
-    def parent_project(self):
-        if self.project_id is not None:
-            return url_for('.get_project', id=self.project_id, _external=True)
-
-        return "No project assigned"
+    def label(self):
+        if self.label_id:
+            return url_for(".get_label", id=self.label_id, _external=True)
+        else:
+            return "No label assigned"
 
 class Label(Model):
     id              = db.Column(db.Integer, primary_key=True)
@@ -102,10 +99,11 @@ class Label(Model):
             "name": self.name,
             "color": self.color,
             "href": self.url,
-            "project": self.project_id,
+            "project": self.parent_project,
             "tasks": self.tasks
         }
 
     @property
     def tasks(self):
         return url_for(".get_label_tasks", id=self.id, _external=True)
+
