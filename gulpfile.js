@@ -6,13 +6,13 @@ const source        = require('vinyl-source-stream')
 const gutil         = require('gulp-util')
 const buffer     	= require('vinyl-buffer')
 const babelify      = require('babelify')
+const vueify        = require('vueify')
 const browserSync   = require('browser-sync')
 const reload		= browserSync.reload
 
-let bundler = browserify({
-        entries: 'assets/js/app.js',
-        debug: true
-}).transform(babelify, { presets: ['es2015'] })
+let bundler = browserify({ entries: 'assets/js/app.js', debug: true })
+    .transform(vueify)
+    .transform(babelify, { presets: ['es2015'] })
 
 let bundleApp = () => {
 
