@@ -1,4 +1,5 @@
 __pycache__
+tings/static/
 *.pyc
 migrations/
 *.log
