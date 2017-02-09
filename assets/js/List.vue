@@ -1,15 +1,26 @@
 <template>
-    <router-view></router-view>
+
+   <ul>
+       <li v-for="name in usernames">{{name}}</li>
+   </ul>
+
 </template>
 
 <script>
 
 export default {
 
-    data: () => {
+    data() {
+
         return {
+
             usernames: ["max", "rimk", "madjid"]
+
         }
+
     }
 }
+
+
+
 </script>
