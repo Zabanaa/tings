@@ -37,16 +37,10 @@ language. Clean, descriptive and minimal. And Flask for the flexibility and
 control it gives me over the code I write.
 
 The Backend essentially acts as a RESTful API that serves JSON to a client
-application written in ...
-
-Vue.js 2
+application written in React
 
 I was growing tired of Angular 1.x so I decided it was time to switch things up
 and try something new.
-
-The number one selling point of Vue.js for me is the clean syntax. It uses plain
-javascript constructs, making it extremely easy for novices to pick up. Perfect
-for someone coming from the AngularJS world. And it's minimal.
 
 The styling is done using sass (the indented flavour).
 
