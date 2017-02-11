@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # Import Config
-app.config.from_object('tings.config.BaseConfig')
+app.config.from_envvar('TINGS_CONFIG')
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 
 # DB Init
