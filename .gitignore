@@ -2,7 +2,6 @@ config/
 __pycache__
 tings/static/
 *.pyc
-migrations/
 *.log
 config.py
 node_modules
