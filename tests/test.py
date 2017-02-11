@@ -5,7 +5,7 @@ import json
 class BaseTestClass(object):
 
     def setUp(self):
-        app.config.from_object('tings.config.TestConfig')
+        app.config.from_envvar('TINGS_TEST_CONFIG')
         self.app = app.test_client()
 
         test_task    = Task({"name": "doing the tings"})
