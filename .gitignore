@@ -11,5 +11,6 @@ node_modules
 .tox
 .DS_*
 env/
+env_tings/
 lib/
 bin/
