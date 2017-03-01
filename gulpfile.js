@@ -1,5 +1,11 @@
 const gulp          = require('gulp')
+const babel         = require("babelify")
+const browserify    = require("browserify")
+const source        = require("vinyl-source-stream")
+const buffer        = require("vinyl-buffer")
 const sass          = require('gulp-sass')
+const plumber       = require("gulp-plumber")
+const history       = require("connect-history-api-fallback")
 const uglify        = require('gulp-uglify')
 const browserSync   = require('browser-sync')
 const reload		= browserSync.reload
@@ -7,7 +13,8 @@ const reload		= browserSync.reload
 // BrowserSync
 gulp.task('sync', () => {
     browserSync.init({
-        proxy: "tings.dev"
+        proxy: "tings.dev",
+        middleware: [ history() ]
     })
 })
 
@@ -22,11 +29,16 @@ gulp.task('sass', () => {
 
 // Scripts
 gulp.task('scripts', () => {
-
-    return gulp.src("./assets/js/*.js")
-        .pipe( uglify() )
+    return browserify("assets/js/app.js")
+        .transform("babelify", {
+            presets: ["es2015", "react"]
+        })
+        .bundle()
+        .pipe(source("app.js"))
+        .pipe(buffer())
+        .pipe(uglify())
         .pipe(gulp.dest("./tings/static/js/"))
-        .pipe( browserSync.reload( {stream: true} ) )
+        .pipe(reload({stream: true}))
 })
 
 // Watch

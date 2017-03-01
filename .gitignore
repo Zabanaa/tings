@@ -14,3 +14,4 @@ env/
 env_tings/
 lib/
 bin/
+node_modules
