@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 # Init App
@@ -21,4 +21,4 @@ app.register_blueprint(auth, url_prefix="/auth")
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return "Welcome to our api"
