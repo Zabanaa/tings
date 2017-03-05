@@ -1,6 +1,5 @@
-config/dev_config.cfg
-config/test_config.cfg
-config/production_config.cfg
+config/
+tings_env/
 __pycache__
 tings/static/
 *.pyc
